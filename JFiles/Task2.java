@@ -18,9 +18,9 @@ public class Task2 {
 
     // add code here
     public static class TokenizerMapper
-            extends Mapper<Object, Text, Text, IntWritable> {
+            extends Mapper<Object, Text, IntWritable, IntWritable> {
 
-        private final static Text dummy = new Text("t");
+        private final static IntWritable dummy = new IntWritable(0);
         private final static IntWritable one = new IntWritable(1);
 
         @Override
@@ -36,16 +36,16 @@ public class Task2 {
     }
 
     public static class IntSumReducer
-            extends Reducer<Text, IntWritable, NullWritable, IntWritable> {
+            extends Reducer<IntWritable, IntWritable, IntWritable, NullWritable> {
 
         @Override
-        public void reduce(Text key, Iterable<IntWritable> values, Context context)
+        public void reduce(IntWritable key, Iterable<IntWritable> values, Context context)
                 throws IOException, InterruptedException {
             int sum = 0;
             for (IntWritable val : values) {
                 sum += val.get();
             }
-            context.write(null, new IntWritable(sum));
+            context.write(new IntWritable(sum), NullWritable.get());
         }
     }
 
@@ -61,18 +61,18 @@ public class Task2 {
 
         // add code here
         job.setMapperClass(Task2.TokenizerMapper.class);
-        job.setCombinerClass(Task2.IntSumReducer.class);
+//        job.setCombinerClass(Task2.IntSumReducer.class);  // have to exclude combiner
         job.setReducerClass(Task2.IntSumReducer.class);
-        job.setNumReduceTasks(1);
+//        job.setNumReduceTasks(1);
 
-        job.setOutputKeyClass(NullWritable.class);
+        job.setOutputKeyClass(IntWritable.class);
         job.setOutputValueClass(IntWritable.class);
 
-//        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
-//        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
-        // for local test only
-        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
-        TextOutputFormat.setOutputPath(job, new Path("my_output/java2.out"));
+        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
+        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+//        // for local test only
+//        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
+//        TextOutputFormat.setOutputPath(job, new Path("my_output/java2.out"));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }

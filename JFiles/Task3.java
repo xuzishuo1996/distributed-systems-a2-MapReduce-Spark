@@ -59,9 +59,9 @@ public class Task3 {
 
         // add code here
         job.setMapperClass(Task3.TokenizerMapper.class);
-        job.setCombinerClass(Task3.IntSumReducer.class);
+//        job.setCombinerClass(Task3.IntSumReducer.class);  // does not matter if include or exclude combiner
         job.setReducerClass(Task3.IntSumReducer.class);
-        job.setNumReduceTasks(1);
+//        job.setNumReduceTasks(1);
 
         job.setOutputKeyClass(IntWritable.class);
         job.setOutputValueClass(IntWritable.class);
