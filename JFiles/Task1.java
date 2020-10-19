@@ -10,9 +10,6 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Task1 {
 
@@ -59,11 +56,11 @@ public class Task1 {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
-//      TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
-//      TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
-        // for local test only
-        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
-        TextOutputFormat.setOutputPath(job, new Path("my_output/java1.out"));
+      TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
+      TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+//        // for local test only
+//        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
+//        TextOutputFormat.setOutputPath(job, new Path("my_output/java1.out"));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
