@@ -9,13 +9,14 @@ object Task2 {
     val textFile = sc.textFile(args(0))
 
     // modify this code
-    val output = textFile.flatMap(line => line.split(",").drop(1))
+    val output = textFile.flatMap(line => line.split(',').drop(1))
                   .filter(rating => rating != "")
-                  .count();
 
-    val accum = sc.intAccumulator
-    sc.parallelize(output).foreach(_ => accum.add(1))
-    val count = accum.value
-    count.saveAsTextFile(args(1))
+    output.length.saveAsTextFile(args(1))
+
+    // val accum = sc.intAccumulator
+    // sc.parallelize(output).foreach(_ => accum.add(1))
+    // val count = accum.value
+    // count.saveAsTextFile(args(1))
   }
 }

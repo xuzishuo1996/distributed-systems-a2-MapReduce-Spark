@@ -11,11 +11,11 @@ object Task1 {
 
     // modify this code
     val output = textFile.map(line => {
-      var ratings = line.split(",")
+      var ratings = line.split(',')
       var movie = ratings(0)
 
       var max = 0
-      var maxUserList = new ListBuffer[String]
+      var maxUserList = new ListBuffer[Int]
 
       // idx starts from 0, 0 is movie name
       for (i <- 1 until ratings.length) {
@@ -33,7 +33,7 @@ object Task1 {
       }
 
       movie + "," + maxUserList.mkString(",")
-    });
+    })
     
     output.saveAsTextFile(args(1))
   }
