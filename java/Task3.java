@@ -1,3 +1,5 @@
+package java;
+
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -12,7 +14,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class Task2 {
+public class Task3 {
 
   // add code here
 
@@ -22,8 +24,8 @@ public class Task2 {
     Configuration conf = new Configuration();
     conf.set("mapreduce.output.textoutputformat.separator", ",");
     
-    Job job = Job.getInstance(conf, "Task2");
-    job.setJarByClass(Task2.class);
+    Job job = Job.getInstance(conf, "Task3");
+    job.setJarByClass(Task3.class);
 
     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 

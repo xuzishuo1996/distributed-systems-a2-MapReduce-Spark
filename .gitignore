@@ -26,3 +26,5 @@ out/
 
 
 ###### 4. Project Specific ######
+target/
+my_output/

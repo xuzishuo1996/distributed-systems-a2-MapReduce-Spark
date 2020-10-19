@@ -12,11 +12,11 @@ object Task2 {
     val output = textFile.flatMap(line => line.split(',').drop(1))
                   .filter(rating => rating != "")
 
-    output.length.saveAsTextFile(args(1))
+//    output.length.saveAsTextFile(args(1))
 
-    // val accum = sc.intAccumulator
-    // sc.parallelize(output).foreach(_ => accum.add(1))
-    // val count = accum.value
-    // count.saveAsTextFile(args(1))
+     val accum = sc.longAccumulator("ratings number count accumulator")
+     sc.parallelize(Seq(output)).foreach(_ => accum.add(1))
+     val count = accum.value
+     textFile.flatMap(s => Seq(count)).saveAsTextFile(args(1))
   }
 }

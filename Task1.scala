@@ -4,15 +4,24 @@ import scala.collection.mutable.{ListBuffer}
 // please don't change the object name
 object Task1 {
   def main(args: Array[String]) {
-    val conf = new SparkConf().setAppName("Task 1")
+//    val conf = new SparkConf().setAppName("Task 1")
+
+    // for test locally
+    val conf = new SparkConf().setAppName("Task 1").setMaster("local")
+
     val sc = new SparkContext(conf)
 
-    val textFile = sc.textFile(args(0))
+    // for test locally
+    val inPath = "sample_input/smalldata.txt"
+    val outPath = "my_output/scala1.out"
+    val textFile = sc.textFile(inPath)
+
+//    val textFile = sc.textFile(args(0))
 
     // modify this code
     val output = textFile.map(line => {
-      var ratings = line.split(',')
-      var movie = ratings(0)
+      val ratings = line.split(',')
+      val movie = ratings(0)
 
       var max = 0
       var maxUserList = new ListBuffer[Int]
@@ -35,6 +44,9 @@ object Task1 {
       movie + "," + maxUserList.mkString(",")
     })
     
-    output.saveAsTextFile(args(1))
+//    output.saveAsTextFile(args(1))
+
+    // for test locally
+    output.saveAsTextFile(outPath)
   }
 }
