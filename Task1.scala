@@ -10,8 +10,8 @@ object Task1 {
     val textFile = sc.textFile(args(0))
 
     // modify this code
-    val output = textFile.map(x => {
-      var ratings = x.split(",")
+    val output = textFile.map(line => {
+      var ratings = line.split(",")
       var movie = ratings(0)
 
       var max = 0
@@ -33,7 +33,7 @@ object Task1 {
       }
 
       movie + "," + maxUserList.mkString(",")
-    })
+    });
     
     output.saveAsTextFile(args(1))
   }
