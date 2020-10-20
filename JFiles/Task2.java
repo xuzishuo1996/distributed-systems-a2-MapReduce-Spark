@@ -65,14 +65,16 @@ public class Task2 {
         job.setReducerClass(Task2.IntSumReducer.class);
 //        job.setNumReduceTasks(1);
 
+        job.setMapOutputKeyClass(IntWritable.class);
+        job.setMapOutputValueClass(IntWritable.class);
         job.setOutputKeyClass(IntWritable.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(NullWritable.class);
 
-        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
-        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
-//        // for local test only
-//        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
-//        TextOutputFormat.setOutputPath(job, new Path("my_output/java2.out"));
+//        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
+//        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+        // for local test only
+        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
+        TextOutputFormat.setOutputPath(job, new Path("my_output/java2.out"));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
