@@ -20,13 +20,16 @@ public class Task3 {
             extends Mapper<Object, Text, IntWritable, IntWritable> {
 
         private final static IntWritable one = new IntWritable(1);
+        private final static IntWritable zero = new IntWritable(0);
 
         @Override
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
             String[] tokens = value.toString().split(",");
             for (int i = 1; i < tokens.length; i++) {
-                if (!tokens[i].equals("")) {
+                if (tokens[i].equals("")) {
+                    context.write(new IntWritable(i), zero);
+                } else {
                     context.write(new IntWritable(i), one);
                 }
             }
