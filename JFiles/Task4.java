@@ -94,11 +94,11 @@ public class Task4 {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-//        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
-//        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
-        // for local test only
-        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
-        TextOutputFormat.setOutputPath(job, new Path("my_output/java4.out"));
+        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
+        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+//        // for local test only
+//        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
+//        TextOutputFormat.setOutputPath(job, new Path("my_output/java4.out"));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
