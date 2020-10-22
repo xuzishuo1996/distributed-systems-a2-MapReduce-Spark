@@ -2,76 +2,81 @@
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.ArrayPrimitiveWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Task4 {
+//    private static String inputPath;
 
-    // add code here
-    public static class MovieRatingsMapper
-            extends Mapper<Object, Text, Text, ArrayPrimitiveWritable> {
+    public static class SimilarityMapper extends
+            Mapper<Object, Text, Text, IntWritable> {
+
+        private static final List<String[]> ratingOfMovies = new ArrayList<>();
+        private BufferedReader reader;
+
+        @Override
+        protected void setup(Context context) throws IOException {
+
+            URI[] localURIs = context.getCacheFiles();
+
+            for (URI uri : localURIs) {
+//                if (uri.toString().trim().equals(inputPath)) {
+//                }
+                loadMovieRatings(new Path(uri), context);
+            }
+        }
+
+        private void loadMovieRatings(Path filePath, Context context)
+                throws IOException {
+            String line;
+            try {
+                reader = new BufferedReader(new FileReader(filePath.toString()));
+
+                while ((line = reader.readLine()) != null) {
+                    String[] movieRatings = line.split(",", -1);
+                    ratingOfMovies.add(movieRatings);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+            }
+        }
 
         @Override
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
-            String[] tokens = value.toString().split(",", -1);
-            int[] ratings = new int[tokens.length - 1];
-            for (int i = 1; i < tokens.length; ++i) {
-                int rating = 0;
-                if (!tokens[i].equals("")) {
-                    rating = Integer.parseInt(tokens[i]);
-                }
-                ratings[i - 1] = rating;
-            }
-            context.write(new Text(tokens[0]), new ArrayPrimitiveWritable(ratings));
-        }
-    }
-
-    public static class SimilarityReducer
-            extends Reducer<Text, ArrayPrimitiveWritable, Text, IntWritable> {
-        // TODO: movie-ratings HashMap. need concurrent or not?
-        public static final ConcurrentHashMap<String, int[]> map = new ConcurrentHashMap<>();
-
-        @Override
-        public void reduce(Text key, Iterable<ArrayPrimitiveWritable> values, Context context)
-                throws IOException, InterruptedException {
-            String movie = key.toString();
-            int[] ratings = (int[]) values.iterator().next().get();
-
-            for (Map.Entry<String, int[]> entry: map.entrySet()) {
-                StringBuilder sb = new StringBuilder();
-
-                String movie2 = entry.getKey();
-                if (movie.compareTo(movie2) < 0) {
-                    sb.append(movie).append(',').append(movie2);
-                } else {
-                    sb.append(movie2).append(',').append(movie);
-                }
-                
-                int[] ratings2 = entry.getValue();
+            String[] ratings1 = value.toString().split(",", -1);
+            for (String[] ratings2: ratingOfMovies) {
                 int similarity = 0;
-                for (int i = 0; i < ratings.length; ++i) {
-                    if (ratings[i] != 0 && ratings[i] == ratings2[i]) {
-                        ++similarity;
+                if (ratings1[0].compareTo(ratings2[0]) < 0) {
+                    for (int i = 1; i < ratings1.length; ++i) {
+                        if (!ratings1[i].equals("") && ! ratings2[i].equals("")) {
+                            int rating1 = Integer.parseInt(ratings1[i]);
+                            int rating2 = Integer.parseInt(ratings2[i]);
+                            if (rating1 == rating2) {
+                                ++similarity;
+                            }
+                        }
                     }
                 }
-                
-                context.write(new Text(sb.toString()), new IntWritable(similarity));
+                String outputKey = ratings1[0] + ',' + ratings2[0];
+                context.write(new Text(outputKey),new IntWritable(similarity));
             }
-
-            map.put(movie, ratings);
         }
     }
 
@@ -84,14 +89,14 @@ public class Task4 {
         job.setJarByClass(Task4.class);
 
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+//        inputPath = otherArgs[0];
 
         // add code here
-        job.setMapperClass(Task4.MovieRatingsMapper.class);
-        job.setReducerClass(Task4.SimilarityReducer.class);
-        job.setNumReduceTasks(1);
+        job.setMapperClass(Task4.SimilarityMapper.class);
+        job.setNumReduceTasks(0);
 
         job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(ArrayPrimitiveWritable.class);
+        job.setMapOutputValueClass(IntWritable.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
