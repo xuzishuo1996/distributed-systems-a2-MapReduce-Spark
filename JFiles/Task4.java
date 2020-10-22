@@ -25,7 +25,7 @@ public class Task4 {
         @Override
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
-            String[] tokens = value.toString().split(",");
+            String[] tokens = value.toString().split(",", -1);
             int[] ratings = new int[tokens.length - 1];
             for (int i = 1; i < tokens.length; ++i) {
                 int rating = 0;
@@ -87,7 +87,7 @@ public class Task4 {
         // add code here
         job.setMapperClass(Task4.MovieRatingsMapper.class);
         job.setReducerClass(Task4.SimilarityReducer.class);
-        // job.setNumReduceTasks(1);
+        job.setNumReduceTasks(1);
 
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(ArrayPrimitiveWritable.class);

@@ -10,7 +10,7 @@ object Task1 {
 
     // modify this code
     val output = textFile.map(line => {
-      val ratings = line.split(',')
+      val ratings = line.split(",", -1)
       val movie = ratings(0)
 
       var max = 0
@@ -58,7 +58,7 @@ object Task1 {
 //
 //    // modify this code
 //    val output = textFile.map(line => {
-//      val ratings = line.split(',')
+//      val ratings = line.split(",", -1)
 //      val movie = ratings(0)
 //
 //      var max = 0

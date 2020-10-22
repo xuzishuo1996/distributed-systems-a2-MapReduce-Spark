@@ -18,7 +18,7 @@ public class Task1 {
 
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
-            String[] tokens = value.toString().split(",");
+            String[] tokens = value.toString().split(",", -1);
             Text movie = new Text(tokens[0]);
 
             StringBuilder maxUsers = new StringBuilder();
@@ -52,12 +52,13 @@ public class Task1 {
 
         // add code here
         job.setMapperClass(Task1.MaxMapper.class);
+        job.setNumReduceTasks(0);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
-      TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
-      TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
+        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
 //        // for local test only
 //        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
 //        TextOutputFormat.setOutputPath(job, new Path("my_output/java1.out"));

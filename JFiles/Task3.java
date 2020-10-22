@@ -25,7 +25,7 @@ public class Task3 {
         @Override
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
-            String[] tokens = value.toString().split(",");
+            String[] tokens = value.toString().split(",", -1);
             for (int i = 1; i < tokens.length; i++) {
                 if (tokens[i].equals("")) {
                     context.write(new IntWritable(i), zero);
@@ -64,7 +64,7 @@ public class Task3 {
         job.setMapperClass(Task3.TokenizerMapper.class);
         job.setCombinerClass(Task3.IntSumReducer.class);  // does not matter if include or exclude combiner
         job.setReducerClass(Task3.IntSumReducer.class);
-//        job.setNumReduceTasks(1);
+        job.setNumReduceTasks(1);
 
         job.setOutputKeyClass(IntWritable.class);
         job.setOutputValueClass(IntWritable.class);

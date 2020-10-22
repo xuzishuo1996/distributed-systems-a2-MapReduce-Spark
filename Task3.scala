@@ -10,7 +10,7 @@ object Task3 {
     val textFile = sc.textFile(args(0))
 
     // modify this code
-    val output = textFile.map(line => line.split(',').drop(1).zipWithIndex.map{case (rating, user) => {
+    val output = textFile.map(line => line.split(",", -1).drop(1).zipWithIndex.map{case (rating, user) => {
       var times = 1;
       if (rating.equals("")) {
         times = 0;
@@ -40,7 +40,7 @@ object Task3 {
 //
 //    // modify this code
 ////    val output = textFile.map(line => {
-////      val ratings = line.split(',')
+////      val ratings = line.split(",", -1)
 ////      val ratedUserList = new ListBuffer[(Int, Int)]
 ////
 ////      // idx starts from 0, 0 is movie name

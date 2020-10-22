@@ -9,7 +9,7 @@ object Task2 {
     val textFile = sc.textFile(args(0))
 
     // modify this code
-    val output = textFile.flatMap(line => line.split(',').drop(1))
+    val output = textFile.flatMap(line => line.split(",", -1).drop(1))
       .filter(rating => rating != "")
       .count()
 
@@ -28,7 +28,7 @@ object Task2 {
 //    val textFile = sc.textFile(inPath)
 //
 //    // modify this code
-//    val output = textFile.flatMap(line => line.split(',').drop(1))
+//    val output = textFile.flatMap(line => line.split(",", -1).drop(1))
 //      .filter(rating => rating != "")
 //      .count()
 //
