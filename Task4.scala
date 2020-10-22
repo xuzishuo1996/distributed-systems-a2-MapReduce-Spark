@@ -40,7 +40,7 @@ object Task4 {
     val output = lines.cartesian(lines)
         .filter(pair => pair._1(0).compareTo(pair._2(0)) < 0)
         .map(pair => {
-          
+
           val ratings1 = pair._1.drop(1).map(rating => {
             if (rating.nonEmpty) {
               rating.toInt
