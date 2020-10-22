@@ -18,8 +18,8 @@ export CLASSPATH=".:$MAIN_SPARK_JAR"
 
 
 echo --- Deleting
-rm Task3-scala.jar
-rm Task3-scala*.class
+rm Task3.jar
+rm Task3*.class
 
 echo --- Compiling
 $SCALA_HOME/bin/scalac -J-Xmx1g Task3.scala
@@ -28,7 +28,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo --- Jarring
-$JAVA_HOME/bin/jar -cf Task3-scala.jar Task3-scala*.class
+$JAVA_HOME/bin/jar -cf Task3.jar Task3*.class
 
 echo --- Running
 INPUT=/a2_inputs/in0.txt

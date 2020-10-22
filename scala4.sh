@@ -18,8 +18,8 @@ export CLASSPATH=".:$MAIN_SPARK_JAR"
 
 
 echo --- Deleting
-rm Task4-scala.jar
-rm Task4-scala*.class
+rm Task4.jar
+rm Task4*.class
 
 echo --- Compiling
 $SCALA_HOME/bin/scalac -J-Xmx1g Task4.scala
@@ -28,7 +28,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo --- Jarring
-$JAVA_HOME/bin/jar -cf Task4-scala.jar Task4-scala*.class
+$JAVA_HOME/bin/jar -cf Task4.jar Task4*.class
 
 echo --- Running
 INPUT=/a2_inputs/in0.txt
@@ -36,7 +36,7 @@ OUTPUT=/user/${USER}/a2_starter_code_output_spark/
 
 $HADOOP_HOME/bin/hdfs dfs -rm -R $OUTPUT
 #$HADOOP_HOME/bin/hdfs dfs -copyFromLocal sample_input/smalldata.txt /user/${USER}/
-time $SPARK_HOME/bin/spark-submit --master yarn --class Task4-scala --driver-memory 4g --executor-memory 4g Task4.jar $INPUT $OUTPUT
+time $SPARK_HOME/bin/spark-submit --master yarn --class Task4 --driver-memory 4g --executor-memory 4g Task4.jar $INPUT $OUTPUT
 
 export HADOOP_ROOT_LOGGER="WARN"
 $HADOOP_HOME/bin/hdfs dfs -ls $OUTPUT
