@@ -28,10 +28,10 @@ if [ $? -ne 0 ]; then
 fi
 
 echo --- Jarring
-$JAVA_HOME/bin/jar -cf Task1.jar Task1.class
+$JAVA_HOME/bin/jar -cf Task1.jar Task1*.class
 
 echo --- Running
-INPUT=/a2_inputs/wc_input.txt
+INPUT=/a2_inputs/in0.txt
 OUTPUT=/user/${USER}/a2_starter_code_output_spark/
 
 $HADOOP_HOME/bin/hdfs dfs -rm -R $OUTPUT

@@ -31,7 +31,7 @@ echo --- Jarring
 $JAVA_HOME/bin/jar -cf Task4-scala.jar Task4-scala*.class
 
 echo --- Running
-INPUT=/a2_inputs/wc_input.txt
+INPUT=/a2_inputs/in0.txt
 OUTPUT=/user/${USER}/a2_starter_code_output_spark/
 
 $HADOOP_HOME/bin/hdfs dfs -rm -R $OUTPUT

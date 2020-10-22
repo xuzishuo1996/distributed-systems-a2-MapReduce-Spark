@@ -4,6 +4,10 @@ import scala.collection.mutable.{ListBuffer}
 // please don't change the object name
 object Task1 {
   def main(args: Array[String]) {
+//    for (i <- args.indices) {
+//      println(args(i))
+//    }
+
     val conf = new SparkConf().setAppName("Task 1")
     val sc = new SparkContext(conf)
     val textFile = sc.textFile(args(0))
