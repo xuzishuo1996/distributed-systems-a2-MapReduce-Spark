@@ -113,7 +113,8 @@ public class Task5 {
         TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
 
         // for remote only
-        job.addCacheFile(new URI("hdfs://localhost" + otherArgs[0]));
+        job.addCacheFile(new URI("/a2_inputs/in0.txt"));
+//        job.addCacheFile(new URI("hdfs://localhost" + otherArgs[0]));
 //        // for local test only
 //        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
 //        TextOutputFormat.setOutputPath(job, new Path("my_output/java1.out"));
