@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -19,6 +20,7 @@ import org.apache.hadoop.util.ToolRunner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,9 +28,10 @@ import java.util.List;
 
 public class Task4 {
 //    private static String inputPath;
-    static {
-        URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
-    }
+
+//    static {
+//        URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
+//    }
 
     public static class SimilarityMapper extends
             Mapper<Object, Text, Text, IntWritable> {
@@ -40,21 +43,43 @@ public class Task4 {
 
         @Override
         public void setup(Context context) throws IOException {
-
             URI[] localURIs = context.getCacheFiles();
+
+            Configuration conf = context.getConfiguration();
 
             for (URI uri : localURIs) {
 //                if (uri.toString().trim().equals(inputPath)) {
 //                }
-                LOG.error("cache file name: " + uri.toString());
-                loadMovieRatings(new Path(uri));
+                FileSystem fs = FileSystem.get(uri, conf);
+                loadMovieRatings(fs, uri);
+//                LOG.error("cache file name: " + uri.toString());
+
+//                loadMovieRatings(new Path(uri));
             }
         }
 
-        public void loadMovieRatings(Path filePath) throws IOException {
+//        public void loadMovieRatings(Path filePath) throws IOException {
+//            String line;
+//            try {
+//                reader = new BufferedReader(new FileReader(filePath.toString()));
+//
+//                while ((line = reader.readLine()) != null) {
+//                    String[] movieRatings = line.split(",", -1);
+//                    ratingOfMovies.add(movieRatings);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (reader != null) {
+//                    reader.close();
+//                }
+//            }
+//        }
+
+        public void loadMovieRatings(FileSystem fs, URI uri) throws IOException {
             String line;
             try {
-                reader = new BufferedReader(new FileReader(filePath.toString()));
+                reader = new BufferedReader(new InputStreamReader(fs.open(new Path(uri))));
 
                 while ((line = reader.readLine()) != null) {
                     String[] movieRatings = line.split(",", -1);
@@ -112,7 +137,13 @@ public class Task4 {
 //        inputPath = otherArgs[0];
 
             // for remote only
-            job.addCacheFile(new URI("hdfs://localhost/a2_inputs/in0.txt"));
+//            job.addCacheFile(new URI("hdfs://localhost/a2_inputs/in0.txt"));
+            job.addCacheFile(new URI(otherArgs[0]));
+            URI[] uris = job.getCacheFiles();
+            for (URI uri: uris) {
+                LOG.error("a cached file: " + uri);
+            }
+
 //            job.addCacheFile(new URI(otherArgs[0]));
 
             // add code here
