@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -19,11 +20,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Task4 {
 //    private static String inputPath;
+    static {
+        URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
+    }
 
     public static class SimilarityMapper extends
             Mapper<Object, Text, Text, IntWritable> {
@@ -107,7 +112,7 @@ public class Task4 {
 //        inputPath = otherArgs[0];
 
             // for remote only
-            job.addCacheFile(new URI("/a2_inputs/in0.txt"));
+            job.addCacheFile(new URI("hdfs://localhost/a2_inputs/in0.txt"));
 //            job.addCacheFile(new URI(otherArgs[0]));
 
             // add code here
