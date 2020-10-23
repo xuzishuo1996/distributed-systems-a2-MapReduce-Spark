@@ -19,14 +19,14 @@ public class Task1 {
     // add code here
     public static class MaxMapper extends Mapper<Object, Text, Text, Text> {
 
-        // for test only
-        private static final Log LOG = LogFactory.getLog(Task1.MaxMapper.class);
+//        // for test only
+//        private static final Log LOG = LogFactory.getLog(Task1.MaxMapper.class);
 
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
 
-            // for test only
-            LOG.error("enter mapper: " + value.toString());
+//            // for test only
+//            LOG.error("enter mapper: " + value.toString()); // no log output here
 
             String[] tokens = value.toString().split(",", -1);
             Text movie = new Text(tokens[0]);
