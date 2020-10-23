@@ -121,7 +121,7 @@ public class Task4 {
 //        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
 //        TextOutputFormat.setOutputPath(job, new Path("my_output/java4.out"));
 
-            System.exit(job.waitForCompletion(true) ? 0 : 1);
+            return job.waitForCompletion(true) ? 0 : 1;
         }
     }
 
