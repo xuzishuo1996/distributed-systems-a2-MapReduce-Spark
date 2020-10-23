@@ -17,69 +17,68 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task4 {
-//    private static String inputPath;
+class SimilarityMapper extends
+        Mapper<Object, Text, Text, IntWritable> {
 
-    public static class SimilarityMapper extends
-            Mapper<Object, Text, Text, IntWritable> {
+    private static final List<String[]> ratingOfMovies = new ArrayList<>();
+    private BufferedReader reader;
 
-        private static final List<String[]> ratingOfMovies = new ArrayList<>();
-        private BufferedReader reader;
+    @Override
+    protected void setup(Context context) throws IOException {
 
-        @Override
-        protected void setup(Context context) throws IOException {
+        URI[] localURIs = context.getCacheFiles();
 
-            URI[] localURIs = context.getCacheFiles();
-
-            for (URI uri : localURIs) {
+        for (URI uri : localURIs) {
 //                if (uri.toString().trim().equals(inputPath)) {
 //                }
-                loadMovieRatings(new Path(uri), context);
-            }
+            loadMovieRatings(new Path(uri), context);
         }
+    }
 
-        private void loadMovieRatings(Path filePath, Context context)
-                throws IOException {
-            String line;
-            try {
-                reader = new BufferedReader(new FileReader(filePath.toString()));
+    private void loadMovieRatings(Path filePath, Context context)
+            throws IOException {
+        String line;
+        try {
+            reader = new BufferedReader(new FileReader(filePath.toString()));
 
-                while ((line = reader.readLine()) != null) {
-                    String[] movieRatings = line.split(",", -1);
-                    ratingOfMovies.add(movieRatings);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (reader != null) {
-                    reader.close();
-                }
+            while ((line = reader.readLine()) != null) {
+                String[] movieRatings = line.split(",", -1);
+                ratingOfMovies.add(movieRatings);
             }
-        }
-
-        @Override
-        public void map(Object key, Text value, Context context)
-                throws IOException, InterruptedException {
-            String[] ratings1 = value.toString().split(",", -1);
-            for (String[] ratings2: ratingOfMovies) {
-                int similarity = 0;
-                if (ratings1[0].compareTo(ratings2[0]) < 0) {
-                    for (int i = 1; i < ratings1.length; ++i) {
-                        if (!ratings1[i].equals("") && ! ratings2[i].equals("")) {
-                            int rating1 = Integer.parseInt(ratings1[i]);
-                            int rating2 = Integer.parseInt(ratings2[i]);
-                            if (rating1 == rating2) {
-                                ++similarity;
-                            }
-                        }
-                    }
-                }
-                String outputKey = ratings1[0] + ',' + ratings2[0];
-                context.write(new Text(outputKey),new IntWritable(similarity));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                reader.close();
             }
         }
     }
 
+    @Override
+    public void map(Object key, Text value, Context context)
+            throws IOException, InterruptedException {
+        String[] ratings1 = value.toString().split(",", -1);
+        for (String[] ratings2: ratingOfMovies) {
+            int similarity = 0;
+            if (ratings1[0].compareTo(ratings2[0]) < 0) {
+                for (int i = 1; i < ratings1.length; ++i) {
+                    if (!ratings1[i].equals("") && ! ratings2[i].equals("")) {
+                        int rating1 = Integer.parseInt(ratings1[i]);
+                        int rating2 = Integer.parseInt(ratings2[i]);
+                        if (rating1 == rating2) {
+                            ++similarity;
+                        }
+                    }
+                }
+            }
+            String outputKey = ratings1[0] + "," + ratings2[0];
+            context.write(new Text(outputKey),new IntWritable(similarity));
+        }
+    }
+}
+
+public class Task4 {
+//    private static String inputPath;
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
@@ -92,7 +91,7 @@ public class Task4 {
 //        inputPath = otherArgs[0];
 
         // add code here
-        job.setMapperClass(Task4.SimilarityMapper.class);
+        job.setMapperClass(SimilarityMapper.class);
         job.setNumReduceTasks(0);
 
         job.setMapOutputKeyClass(Text.class);
