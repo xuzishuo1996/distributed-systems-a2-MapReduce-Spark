@@ -62,8 +62,7 @@ public class Task4 {
         }
 
         @Override
-        public void map(Object key, Text value, Context context)
-                throws IOException, InterruptedException {
+        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             LOG.error("enter mapper: " + value.toString());
 
             String[] ratings1 = value.toString().split(",", -1);
@@ -71,7 +70,7 @@ public class Task4 {
                 int similarity = 0;
                 if (ratings1[0].compareTo(ratings2[0]) < 0) {
                     for (int i = 1; i < ratings1.length; ++i) {
-                        if (!ratings1[i].equals("") && ! ratings2[i].equals("")) {
+                        if (!ratings1[i].equals("") && !ratings2[i].equals("")) {
                             int rating1 = Integer.parseInt(ratings1[i]);
                             int rating2 = Integer.parseInt(ratings2[i]);
                             if (rating1 == rating2) {
