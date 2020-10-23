@@ -20,7 +20,7 @@ public class Task1 {
     public static class MaxMapper extends Mapper<Object, Text, Text, Text> {
 
         // for test only
-        private static final Log LOG = LogFactory.getLog(Task4.SimilarityMapper.class);
+        private static final Log LOG = LogFactory.getLog(Task1.MaxMapper.class);
 
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {

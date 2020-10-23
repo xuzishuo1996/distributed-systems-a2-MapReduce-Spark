@@ -25,7 +25,7 @@ public class Task4 {
     public static class SimilarityMapper extends
             Mapper<Object, Text, Text, IntWritable> {
 
-        private static final Log LOG = LogFactory.getLog(SimilarityMapper.class);
+        private static final Log LOG = LogFactory.getLog(Task4.SimilarityMapper.class);
 
         private static final List<String[]> ratingOfMovies = new ArrayList<>();
         private BufferedReader reader;
@@ -101,7 +101,7 @@ public class Task4 {
         job.addCacheFile(new URI(otherArgs[0]));
 
         // add code here
-        job.setMapperClass(SimilarityMapper.class);
+        job.setMapperClass(Task4.SimilarityMapper.class);
         job.setNumReduceTasks(0);
 
 //        job.setMapOutputKeyClass(Text.class);
