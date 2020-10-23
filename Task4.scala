@@ -37,36 +37,37 @@ object Task4 {
 
     // modify this code
     val lines = textFile.map(line => line.split(",", -1))
-    val broadcastLines = sc.broadcast(lines)
-    val output = broadcastLines.value.cartesian(broadcastLines.value)
-        .filter(pair => pair._1(0).compareTo(pair._2(0)) < 0)
-        .map(pair => {
+    val broadcastLines = sc.broadcast(lines.collect())
+    val linesRDD = sc.parallelize(broadcastLines.value)
+    val output = linesRDD.cartesian(linesRDD)
+      .filter(pair => pair._1(0).compareTo(pair._2(0)) < 0)
+      .map(pair => {
 
-          val ratings1 = pair._1.drop(1).map(rating => {
-            if (rating.nonEmpty) {
-              rating.toInt
-            } else {
-              0
-            }
-          })
-
-          val ratings2 = pair._2.drop(1).map(rating => {
-            if (rating.nonEmpty) {
-              rating.toInt
-            } else {
-              0
-            }
-          })
-
-          var similarity = 0
-          for (i <- ratings1.indices) {
-            if (ratings1(i) != 0 && ratings1(i) == ratings2(i)) {
-              similarity += 1
-            }
+        val ratings1 = pair._1.drop(1).map(rating => {
+          if (rating.nonEmpty) {
+            rating.toInt
+          } else {
+            0
           }
-
-          pair._1(0) + ',' + pair._2(0) + ',' + similarity
         })
+
+        val ratings2 = pair._2.drop(1).map(rating => {
+          if (rating.nonEmpty) {
+            rating.toInt
+          } else {
+            0
+          }
+        })
+
+        var similarity = 0
+        for (i <- ratings1.indices) {
+          if (ratings1(i) != 0 && ratings1(i) == ratings2(i)) {
+            similarity += 1
+          }
+        }
+
+        pair._1(0) + "," + pair._2(0) + "," + similarity
+      })
 
     output.saveAsTextFile(args(1))
   }
