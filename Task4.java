@@ -104,7 +104,8 @@ public class Task4 {
 //        inputPath = otherArgs[0];
 
             // for remote only
-            job.addCacheFile(new URI(otherArgs[0]));
+            job.addCacheFile(new URI("/a2_inputs/in0.txt"));
+//            job.addCacheFile(new URI(otherArgs[0]));
 
             // add code here
             job.setMapperClass(Task4.SimilarityMapper.class);
