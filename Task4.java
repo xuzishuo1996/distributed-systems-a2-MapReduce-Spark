@@ -26,7 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task4 {
+public class Task4 extends Configured implements Tool {
 //    private static String inputPath;
 
 //    static {
@@ -121,54 +121,97 @@ public class Task4 {
         }
     }
 
-    public static class DriverSimilarity extends Configured implements Tool {
-        @Override
-        public int run(String[] args) throws Exception {
-            Log LOG = LogFactory.getLog(Task4.class);
-            LOG.error("START IN MAIN!!!");  // log exists
+    @Override
+    public int run(String[] args) throws Exception {
+        Log LOG = LogFactory.getLog(Task4.class);
+        LOG.error("START IN MAIN!!!");  // log exists
 
-            Configuration conf = new Configuration();
-            conf.set("mapreduce.output.textoutputformat.separator", ",");
+        Configuration conf = new Configuration();
+        conf.set("mapreduce.output.textoutputformat.separator", ",");
 
-            Job job = Job.getInstance(conf, "Task4");
-            job.setJarByClass(Task4.class);
+        Job job = Job.getInstance(conf, "Task4");
+        job.setJarByClass(Task4.class);
 
-            String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+        String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 //        inputPath = otherArgs[0];
 
-            // for remote only
+        // for remote only
 //            job.addCacheFile(new URI("hdfs://localhost/a2_inputs/in0.txt"));
-            job.addCacheFile(new URI(otherArgs[0]));
-            URI[] uris = job.getCacheFiles();
-            for (URI uri: uris) {
-                LOG.error("a cached file: " + uri);
-            }
+        job.addCacheFile(new URI(otherArgs[0]));
+        URI[] uris = job.getCacheFiles();
+        for (URI uri: uris) {
+            LOG.error("a cached file: " + uri);
+        }
 
 //            job.addCacheFile(new URI(otherArgs[0]));
 
-            // add code here
-            job.setMapperClass(Task4.SimilarityMapper.class);
-            job.setNumReduceTasks(0);
+        // add code here
+        job.setMapperClass(Task4.SimilarityMapper.class);
+        job.setNumReduceTasks(0);
 
 //        job.setMapOutputKeyClass(Text.class);
 //        job.setMapOutputValueClass(IntWritable.class);
-            job.setOutputKeyClass(Text.class);
-            job.setOutputValueClass(IntWritable.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
 
-            TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
-            TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+        TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
+        TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
 //        // for local test only
 //        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
 //        TextOutputFormat.setOutputPath(job, new Path("my_output/java4.out"));
 
-            return job.waitForCompletion(true) ? 0 : 1;
-        }
+        return job.waitForCompletion(true) ? 0 : 1;
     }
 
     public static void main(String[] args) throws Exception {
-        int exitCode = ToolRunner.run(new DriverSimilarity(), args);
+        int exitCode = ToolRunner.run(new Task4(), args);
         System.exit(exitCode);
     }
+
+//    public static class DriverSimilarity extends Configured implements Tool {
+//        @Override
+//        public int run(String[] args) throws Exception {
+//            Log LOG = LogFactory.getLog(Task4.class);
+//            LOG.error("START IN MAIN!!!");  // log exists
+//
+//            Configuration conf = new Configuration();
+//            conf.set("mapreduce.output.textoutputformat.separator", ",");
+//
+//            Job job = Job.getInstance(conf, "Task4");
+//            job.setJarByClass(Task4.class);
+//
+//            String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+////        inputPath = otherArgs[0];
+//
+//            // for remote only
+////            job.addCacheFile(new URI("hdfs://localhost/a2_inputs/in0.txt"));
+//            job.addCacheFile(new URI(otherArgs[0]));
+//            URI[] uris = job.getCacheFiles();
+//            for (URI uri: uris) {
+//                LOG.error("a cached file: " + uri);
+//            }
+//
+////            job.addCacheFile(new URI(otherArgs[0]));
+//
+//            // add code here
+//            job.setMapperClass(Task4.SimilarityMapper.class);
+//            job.setNumReduceTasks(0);
+//
+////        job.setMapOutputKeyClass(Text.class);
+////        job.setMapOutputValueClass(IntWritable.class);
+//            job.setOutputKeyClass(Text.class);
+//            job.setOutputValueClass(IntWritable.class);
+//
+//            TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
+//            TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+////        // for local test only
+////        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
+////        TextOutputFormat.setOutputPath(job, new Path("my_output/java4.out"));
+//
+//            return job.waitForCompletion(true) ? 0 : 1;
+//        }
+//    }
+
 
 //    public static void main(String[] args) throws Exception {
 //        Log LOG = LogFactory.getLog(Task4.class);
