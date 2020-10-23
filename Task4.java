@@ -85,6 +85,9 @@ public class Task4 {
                     context.write(new Text(outputKey), new IntWritable(similarity));
                 }
             }
+            if (ratingOfMovies.size() == 0) {
+                context.write(new Text("fail to load into cache"), new IntWritable(-1));
+            }
         }
     }
 
