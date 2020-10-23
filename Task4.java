@@ -88,7 +88,7 @@ public class Task4 {
 
     public static void main(String[] args) throws Exception {
         Log LOG = LogFactory.getLog(Task4.class);
-        LOG.error("START IN MAIN!!!");
+        LOG.error("START IN MAIN!!!");  // log exists
 
         Configuration conf = new Configuration();
         conf.set("mapreduce.output.textoutputformat.separator", ",");
@@ -105,8 +105,8 @@ public class Task4 {
         job.setMapperClass(SimilarityMapper.class);
         job.setNumReduceTasks(0);
 
-        job.setMapOutputKeyClass(Text.class);
-        job.setMapOutputValueClass(IntWritable.class);
+//        job.setMapOutputKeyClass(Text.class);
+//        job.setMapOutputValueClass(IntWritable.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
