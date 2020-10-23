@@ -43,8 +43,7 @@ public class Task4 {
             }
         }
 
-        public void loadMovieRatings(Path filePath)
-                throws IOException {
+        public void loadMovieRatings(Path filePath) throws IOException {
             String line;
             try {
                 reader = new BufferedReader(new FileReader(filePath.toString()));
@@ -65,6 +64,8 @@ public class Task4 {
         @Override
         public void map(Object key, Text value, Context context)
                 throws IOException, InterruptedException {
+            LOG.error("enter mapper: " + value.toString());
+
             String[] ratings1 = value.toString().split(",", -1);
             for (String[] ratings2: ratingOfMovies) {
                 int similarity = 0;
