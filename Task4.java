@@ -164,7 +164,7 @@ public class Task4 extends Configured implements Tool {
     }
 
     public static void main(String[] args) throws Exception {
-        int exitCode = ToolRunner.run(new Task4(), args);
+        int exitCode = ToolRunner.run(new Configuration(), new Task4(), args);
         System.exit(exitCode);
     }
 
