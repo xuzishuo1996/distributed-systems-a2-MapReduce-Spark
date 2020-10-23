@@ -74,8 +74,6 @@ public class Task2 {
         TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
         TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
 
-        // for remote only
-        job.addCacheFile(new URI(otherArgs[0]));
 //        // for local test only
 //        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
 //        TextOutputFormat.setOutputPath(job, new Path("my_output/java2.out"));
