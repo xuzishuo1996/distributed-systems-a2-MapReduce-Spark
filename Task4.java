@@ -166,8 +166,7 @@ public class Task4 {
     }
 
     public static void main(String[] args) throws Exception {
-        int exitCode = ToolRunner.run(new Configuration(),
-                new DriverSimilarity(), args);
+        int exitCode = ToolRunner.run(new DriverSimilarity(), args);
         System.exit(exitCode);
     }
 
