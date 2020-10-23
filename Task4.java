@@ -1,5 +1,7 @@
 //package JFiles;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -23,6 +25,8 @@ public class Task4 {
     public static class SimilarityMapper extends
             Mapper<Object, Text, Text, IntWritable> {
 
+        private static final Log LOG = LogFactory.getLog(SimilarityMapper.class);
+
         private static final List<String[]> ratingOfMovies = new ArrayList<>();
         private BufferedReader reader;
 
@@ -34,6 +38,7 @@ public class Task4 {
             for (URI uri : localURIs) {
 //                if (uri.toString().trim().equals(inputPath)) {
 //                }
+                LOG.error("cache file name: " + uri.toString());
                 loadMovieRatings(new Path(uri));
             }
         }
