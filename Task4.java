@@ -126,7 +126,7 @@ public class Task4 extends Configured implements Tool {
         Log LOG = LogFactory.getLog(Task4.class);
         LOG.error("START IN MAIN!!!");  // log exists
 
-        Configuration conf = new Configuration();
+        Configuration conf = getConf();
         conf.set("mapreduce.output.textoutputformat.separator", ",");
 
         Job job = Job.getInstance(conf, "Task4");
