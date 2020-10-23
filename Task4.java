@@ -87,6 +87,9 @@ public class Task4 {
     }
 
     public static void main(String[] args) throws Exception {
+        Log LOG = LogFactory.getLog(Task4.class);
+        LOG.error("START IN MAIN!!!");
+
         Configuration conf = new Configuration();
         conf.set("mapreduce.output.textoutputformat.separator", ",");
 
@@ -95,6 +98,8 @@ public class Task4 {
 
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 //        inputPath = otherArgs[0];
+        // for remote only
+        job.addCacheFile(new URI(otherArgs[0]));
 
         // add code here
         job.setMapperClass(SimilarityMapper.class);
@@ -107,9 +112,6 @@ public class Task4 {
 
         TextInputFormat.addInputPath(job, new Path(otherArgs[0]));
         TextOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
-
-        // for remote only
-        job.addCacheFile(new URI(otherArgs[0]));
 //        // for local test only
 //        TextInputFormat.addInputPath(job, new Path("sample_input/smalldata.txt"));
 //        TextOutputFormat.setOutputPath(job, new Path("my_output/java4.out"));
