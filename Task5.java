@@ -18,14 +18,14 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task1 {
+public class Task5 {
 
     // add code here
 
     public static class MaxMapper extends
             Mapper<Object, Text, Text, Text> {
 
-        private static final Log LOG = LogFactory.getLog(Task4.SimilarityMapper.class);
+        private static final Log LOG = LogFactory.getLog(Task5.MaxMapper.class);
 
         private static List<String[]> ratingOfMovies = new ArrayList<>();
         private BufferedReader reader;
@@ -98,12 +98,12 @@ public class Task1 {
         conf.set("mapreduce.output.textoutputformat.separator", ",");
 
         Job job = Job.getInstance(conf, "Task1");
-        job.setJarByClass(Task1.class);
+        job.setJarByClass(Task5.class);
 
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
 
         // add code here
-        job.setMapperClass(Task1.MaxMapper.class);
+        job.setMapperClass(Task5.MaxMapper.class);
         job.setNumReduceTasks(0);
 
         job.setOutputKeyClass(Text.class);
