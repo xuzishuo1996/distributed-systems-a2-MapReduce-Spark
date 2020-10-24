@@ -36,7 +36,7 @@ object Task4 {
     val textFile = sc.textFile(args(0))
 
     // modify this code
-    val lines = textFile.map(line => line.split(",", -1)).persist()
+    val lines = textFile.map(line => line.split(",", -1))
     val output = lines.cartesian(lines)
         .filter(pair => pair._1(0).compareTo(pair._2(0)) < 0)
         .map(pair => {
