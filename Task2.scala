@@ -13,7 +13,7 @@ object Task2 {
       .filter(rating => rating != "")
       .count()
 
-    sc.parallelize(Seq(output)).saveAsTextFile(args(1))
+    sc.parallelize(Seq(output)).coalesce(1).saveAsTextFile(args(1))
   }
 }
 
