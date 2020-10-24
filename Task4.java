@@ -77,6 +77,7 @@ public class Task4 {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         conf.set("mapreduce.output.textoutputformat.separator", ",");
+        conf.setBoolean("mapreduce.map.output.compress", true);
 
         Job job = Job.getInstance(conf, "Task4");
         job.setJarByClass(Task4.class);
