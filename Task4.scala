@@ -1,4 +1,5 @@
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.storage.StorageLevel
+import org.apache.spark.{SparkConf, SparkContext}
 
 // please don't change the object name
 object Task4 {
@@ -36,7 +37,7 @@ object Task4 {
     val textFile = sc.textFile(args(0))
 
     // modify this code
-    val lines = textFile.map(line => line.split(",", -1))
+    val lines = textFile.map(line => line.split(",", -1)).persist(StorageLevel.MEMORY_AND_DISK)
     val output = lines.cartesian(lines)
         .filter(pair => pair._1(0).compareTo(pair._2(0)) < 0)
         .map(pair => {
