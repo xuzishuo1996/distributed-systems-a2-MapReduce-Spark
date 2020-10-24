@@ -86,7 +86,7 @@ public class Task4 {
         // add code here
         job.setMapperClass(Task4.MovieRatingsMapper.class);
         job.setReducerClass(Task4.SimilarityReducer.class);
-        job.setNumReduceTasks(1);
+        job.setNumReduceTasks(4);
 
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(ArrayPrimitiveWritable.class);
